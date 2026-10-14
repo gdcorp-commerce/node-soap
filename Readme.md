@@ -18,6 +18,11 @@ Install with [npm](http://github.com/isaacs/npm):
 ```
   npm install soap
 ```
+
+## Devcontainer (alternative to the manual setup below)
+
+A ready-to-use Docker dev environment (Node.js + Artifactory + Claude Code) is available — see [`.devcontainer/README.md`](.devcontainer/README.md).
+
 ## Module
 
 ### soap.createClient(url[, options], callback) - create a new SOAP client from a WSDL url. Also supports a local filesystem path.
