@@ -328,6 +328,24 @@ describe('SOAP Server', function() {
     });
   });
 
+  it('should not pollute Object.prototype via id attributes in the request body', function(done) {
+    var xml = '<soap:Envelope xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/" ' +
+      'xmlns:xsd1="http://example.com/stockquote.xsd">' +
+      '<soap:Body><xsd1:TradePriceRequest>' +
+      '<tickerSymbol id="__proto__">AAPL</tickerSymbol>' +
+      '</xsd1:TradePriceRequest></soap:Body></soap:Envelope>';
+    request.post({
+      url: test.baseUrl + '/stockquote',
+      body: xml,
+      headers: { 'Content-Type': 'text/xml; charset=utf-8' }
+    }, function(err, res, body) {
+      assert.ok(!err);
+      assert.ok(!Object.prototype.hasOwnProperty.call(Object.prototype, 'obj'));
+      assert.strictEqual(({}).obj, undefined);
+      done();
+    });
+  });
+
 // NOTE: this is actually a -client- test
 /*
 it('should return a valid error if the server stops responding': function(done) {
